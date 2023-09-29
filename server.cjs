@@ -4,7 +4,7 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 
-
+require('./config/database.cjs');
 const app = express();
 
 // Middleware
@@ -18,12 +18,16 @@ app.use(express.json());
 // app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'dist')));
 
+// checkToken Middleware. (Sets the req.user & req.exp properties on the request object)
+app.use(require("./config/checkToken.cjs"));
 
 // Put API routes here, before the "catch all" route
 app.get('/api/test', (req, res) => {
   res.send('You just hit a API route');
 });
 
+const userRouter = require("./routes/api/users.cjs");
+app.use("/api/users", userRouter);
 
 // The following "catch all" route (note the *) is necessary
 // to return the index.html on all non-AJAX requests
