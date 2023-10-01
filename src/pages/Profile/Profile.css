@@ -1,0 +1,54 @@
+.container {
+  background-color: #0056b3;
+  height: 100%;
+  padding-bottom: 10px;
+}
+.profile {
+  margin: 3% 5%;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.edit-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.form-group button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-right: 10px;
+  background-color: yellow;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.view-profile button {
+  background-color: yellow;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-top: 10px;
+}

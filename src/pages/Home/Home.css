@@ -1,0 +1,46 @@
+.container {
+  margin: 0;
+  padding: 0;
+}
+
+.hero-container {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 9% 8%;
+  background-image: url("https://wallpapers.com/images/hd/mountains-background-kfpok0pdo9yd6ha7.jpg");
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+.info-section {
+  margin: 0;
+  width: 40%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.info-section h2 {
+  margin: 0;
+  padding: 15px;
+  width: 85%;
+  font-size: 48px;
+  background-color: #fff;
+  color: #0b6aa8;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.info-section p {
+  margin: 0;
+  padding: 15px;
+  width: 100%;
+  font-size: 16px;
+  background-color: #fff;
+  color: #0b6aa8;
+  border-radius: 10px;
+}

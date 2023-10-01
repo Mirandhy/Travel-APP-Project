@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const logger = require("morgan");
+const cors = require("cors");
 
 // Connect to database
 require("./config/database.cjs");
@@ -13,6 +14,7 @@ const app = express();
 app.use(logger("dev"));
 // middleware to parse incoming JSON data
 app.use(express.json());
+app.use(cors());
 
 // Configure both serve-favicon & static middleware
 // to serve from the production 'build' folder
@@ -32,7 +34,6 @@ const locationRouter = require("./routes/api/locations.cjs");
 const bookingRouter = require("./routes/api/bookings.cjs");
 const tourRouter = require("./routes/api/tours.cjs");
 const tourGuideRouter = require("./routes/api/tours.cjs");
-const tourCategoryRouter = require("./routes/api/tours.cjs");
 
 //User Router
 app.use("/api/users", userRouter);
@@ -40,7 +41,6 @@ app.use("/api/locations", locationRouter);
 app.use("/api/bookings", bookingRouter);
 app.use("/api/tours", tourRouter);
 app.use("/api/tours-guide", tourGuideRouter);
-app.use("/api/tours-category", tourCategoryRouter);
 
 // The following "catch all" route (note the *) is necessary
 // to return the index.html on all non-AJAX requests
