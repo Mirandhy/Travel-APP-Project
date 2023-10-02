@@ -21,7 +21,7 @@ function App() {
             />
             <Route path="/tours" user={user} element={<Tours user={user} />} />
             <Route
-              path="/location/:id"
+              path="/location/:locationID"
               user={user}
               element={<Location user={user} />}
             />
