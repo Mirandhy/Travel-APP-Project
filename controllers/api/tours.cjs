@@ -1,5 +1,6 @@
 const Tour = require("../../models/tour.cjs");
 const Location = require("../../models/location.cjs");
+const TourGuide = require("../../models/tour_guide.cjs");
 
 module.exports = {
   create_tour,
@@ -11,7 +12,14 @@ module.exports = {
 
 async function create_tour(req, res) {
   try {
-    // Add the tour to the database
+    let searched_location = await Location.findById(req.body.location._id);
+    if (!searched_location) {
+      return res.status(404).json({ msg: "Location Not Found!" });
+    }
+    let searched_guide = await TourGuide.findById(req.body.tour_guide._id);
+    if (!searched_guide) {
+      return res.status(404).json({ msg: "Tour Guide Not Found!" });
+    }
     console.log(req.body);
     await Tour.create(req.body);
     res.status(200).json({ msg: "Successfully Created Tour" });
@@ -22,7 +30,6 @@ async function create_tour(req, res) {
 }
 async function read_tour(req, res) {
   try {
-    // Add the tour to the database
     let searched_tour = await Tour.findById(req.params.id);
     if (searched_tour) {
       res.status(200).json({ tour: searched_tour });
@@ -36,7 +43,6 @@ async function read_tour(req, res) {
 }
 async function read_tours(req, res) {
   try {
-    // Add the tour to the database
     let searched_tours = await Tour.find({});
     res.status(200).json({ tours: searched_tours });
   } catch (err) {
@@ -46,9 +52,13 @@ async function read_tours(req, res) {
 }
 async function update_tour(req, res) {
   try {
-    let searched_location = await Location.findById(req.body.location_id);
+    let searched_location = await Location.findById(req.body.location._id);
     if (!searched_location) {
       return res.status(404).json({ msg: "Location Not Found!" });
+    }
+    let searched_guide = await TourGuide.findById(req.body.tour_guide._id);
+    if (!searched_guide) {
+      return res.status(404).json({ msg: "Tour Guide Not Found!" });
     }
     let searched_tour = await Tour.findById(req.params.id);
     if (searched_tour) {
@@ -58,7 +68,8 @@ async function update_tour(req, res) {
         price: req.body.price,
         start_date: req.body.start_date,
         end_date: req.body.end_date,
-        location_id: req.body.location_id,
+        location_id: req.body.location._id,
+        tour_guide: req.body.tour_guide._id,
       });
       res.status(200).json({ msg: "Successfully Updated Tour" });
     } else {

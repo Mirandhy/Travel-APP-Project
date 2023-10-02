@@ -2,15 +2,22 @@
 import * as usersAPI from "./users-api";
 
 export async function signUp(userData) {
-  const response = await usersAPI.signUp(userData);
-  return response;
+  // Delegate the network request code to the users-api.js API module
+  // which will ultimately return a JSON Web Token (JWT)
+  // This is the frontend recieving the response from the backend (token) and persist (STEP 3)
+  const token = await usersAPI.signUp(userData);
+  // Persist the token
+  localStorage.setItem("token", token);
+
+  // Baby step by returning whatever is sent back by the server
+  return getUser();
 }
 
 export async function login(credentials) {
-  const data = await usersAPI.login(credentials);
+  const response = await usersAPI.login(credentials);
 
   // Persist the token
-  localStorage.setItem("token", data.token);
+  localStorage.setItem("token", response.token);
 
   return getUser();
 }

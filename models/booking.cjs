@@ -10,14 +10,12 @@ const bookingSchema = new Schema(
       type: Date,
       required: true,
     },
-    customer_id: {
-      type: Schema.Types.ObjectId,
-      ref: "Tour",
+    customer: {
+      type: Object,
       required: true,
     },
-    tour_id: {
-      type: Schema.Types.ObjectId,
-      ref: "Tour",
+    tour: {
+      type: Object,
       required: true,
     },
   },

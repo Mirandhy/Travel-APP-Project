@@ -13,3 +13,7 @@ export function login(credentials) {
 export function checkToken() {
   return sendRequest(`${BASE_URL}/check-token`);
 }
+
+export function editUser(userData) {
+  return sendRequest(`${BASE_URL}/${userData._id}`, "PUT", userData);
+}

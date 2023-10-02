@@ -34,4 +34,4 @@ const tourGuideSchema = new Schema(
   }
 );
 
-module.exports = model("Tour-Guide", tourGuideSchema);
+module.exports = model("Tour-Guides", tourGuideSchema);

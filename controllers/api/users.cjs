@@ -45,7 +45,7 @@ async function update_user(req, res) {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
-        dob: req.body.dob,
+        dob: new Date(req.body.dob),
         phone_number: req.body.phone_number,
         address: req.body.address,
       });

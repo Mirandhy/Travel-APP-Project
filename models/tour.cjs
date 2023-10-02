@@ -17,13 +17,11 @@ const tourSchema = new Schema(
       required: true,
     },
     tour_guide: {
-      type: Schema.Types.ObjectId,
-      ref: "Tour-Guide",
+      type: Object,
       required: true,
     },
-    location_id: {
-      type: Schema.Types.ObjectId,
-      ref: "Location",
+    location: {
+      type: Object,
       required: true,
     },
   },

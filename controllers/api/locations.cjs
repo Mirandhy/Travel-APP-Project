@@ -21,7 +21,6 @@ async function create_location(req, res) {
 }
 async function read_location(req, res) {
   try {
-    // Add the location to the database
     let searched_location = await Location.findById(req.params.id);
     if (searched_location) {
       res.status(200).json({ location: searched_location });
@@ -35,7 +34,6 @@ async function read_location(req, res) {
 }
 async function read_locations(req, res) {
   try {
-    // Add the location to the database
     let searched_locations = await Location.find({});
     res.status(200).json({ locations: searched_locations });
   } catch (err) {

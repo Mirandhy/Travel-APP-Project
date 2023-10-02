@@ -1,66 +1,40 @@
 import "./Location.css";
-import React, { useEffect, useState } from "react";
-import L from "leaflet"; // Import Leaflet library
-import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
-import axios from "axios"; // Import Axios for API requests
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import NavBar from "../../components/navbar/NavBar";
+import { getLocation } from "../../utilities/locations-api";
 
 const Location = ({ user }) => {
-  const [locationData, setLocationData] = useState({
-    image: "",
-    description: "",
-    latitude: 37.7749,
-    longitude: -122.4194,
-    weather: "",
-  });
+  const [locationData, setLocationData] = useState({});
+  const [weatherData, setWeatherData] = useState({});
+  let { locationID } = useParams();
 
   useEffect(() => {
-    // Fetch location data
-    axios.get("https://api.example.com/location").then((response) => {
-      const { image, description, latitude, longitude } = response.data;
-      setLocationData({
-        ...locationData,
-        image,
-        description,
-        latitude,
-        longitude,
-      });
-
-      // Initialize Leaflet map
-      const map = L.map("map").setView([latitude, longitude], 13);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
-        map
-      );
-
-      // Fetch weather data
+    const fetchLocationByID = async (locationID) => {
+      const response = await getLocation(locationID);
+      setLocationData(response.location);
       axios
-        .get(`https://api.openweathermap.org/data/2.5/weather`, {
-          params: {
-            lat: latitude,
-            lon: longitude,
-            appid: "your_openweathermap_api_key",
-          },
-        })
+        .get(
+          `https://api.open-meteo.com/v1/forecast?latitude=${response.location.lat}&longitude=${response.location.lon}&current_weather=true`
+        )
         .then((weatherResponse) => {
-          const weather = weatherResponse.data.weather[0].description;
-          setLocationData({ ...locationData, weather });
+          console.log(weatherResponse);
+          setWeatherData(weatherResponse.data.current_weather);
         });
-    });
+    };
+    fetchLocationByID(locationID);
   }, []);
 
   return (
     <div className="container">
       <NavBar user={user}></NavBar>
       <div className="location">
-        <h2>Location</h2>
+        <h2>{locationData.name}</h2>
+        <h3>{new Date(weatherData.time).toLocaleTimeString()} </h3>
+        <h3>{1.8 * weatherData.temperature + 32} &#8457; </h3>
         <img src={locationData.image} alt="Location" />
-        <p>Description: {locationData.description}</p>
-        <p>Latitude: {locationData.latitude}</p>
-        <p>Longitude: {locationData.longitude}</p>
-        <p>Weather: {locationData.weather}</p>
-
-        {/* Map container */}
-        <div id="map" style={{ height: "300px" }}></div>
+        <p>{locationData.description}</p>
       </div>
     </div>
   );

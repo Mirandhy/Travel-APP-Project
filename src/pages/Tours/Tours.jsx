@@ -1,65 +1,48 @@
-import { NavLink } from "react-router-dom";
-import NavBar from "../../components/navbar/NavBar";
 import "./Tours.css";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import NavBar from "../../components/navbar/NavBar";
+import { getTours } from "../../utilities/tours-api";
+import { createCustomerBooking } from "../../utilities/bookings-api";
 
 const Tours = ({ user }) => {
-  // Sample data for  bookings
-  const bookings = [
-    {
-      id: 1,
-      location: "Paris",
-      location_img:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
-      price: "$400",
-      guide: "John Doe",
-      booking_date: "10/02/2023",
-    },
-    {
-      id: 2,
-      location: "Kyoto",
-      location_img:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
-      price: "$400",
-      guide: "John Doe",
-      booking_date: "10/02/2023",
-    },
-    {
-      id: 3,
-      location: "Seoul",
-      location_img:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
-      price: "$400",
-      guide: "John Doe",
-      booking_date: "10/02/2023",
-    },
-    {
-      id: 4,
-      location: "New York",
-      location_img:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
-      price: "$400",
-      guide: "John Doe",
-      booking_date: "10/02/2023",
-    },
-    {
-      id: 4,
-      location: "New York",
-      location_img:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
-      price: "$400",
-      guide: "John Doe",
-      booking_date: "10/02/2023",
-    },
-    {
-      id: 4,
-      location: "New York",
-      location_img:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
-      price: "$400",
-      guide: "John Doe",
-      booking_date: "10/02/2023",
-    },
-  ];
+  const [tours, setTours] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [filteredTours, setFilteredTours] = useState([]); // State for filtered tours
+  const navigate = useNavigate();
+
+  const bookTour = async (tour) => {
+    try {
+      let booking = {
+        price: tour.price,
+        booking_date: new Date(),
+        customer: user,
+        tour: tour,
+      };
+      await createCustomerBooking(booking);
+      alert("Tour Booked!");
+      navigate("/");
+    } catch (error) {
+      alert("Error Occurred!");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchToursFromAPI = async () => {
+      const response = await getTours();
+      setTours(response.tours);
+    };
+    fetchToursFromAPI();
+  }, []);
+
+  // Update filteredTours whenever searchQuery changes
+  useEffect(() => {
+    const filtered = tours.filter((tour) =>
+      tour.location.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredTours(filtered);
+  }, [searchQuery, tours]);
 
   return (
     <div className="container">
@@ -69,35 +52,47 @@ const Tours = ({ user }) => {
         <div className="tour-search">
           <input
             type="text"
-            placeholder="Search Locations..."
-            value=""
-            onChange={(e) => console.log(e.target.value)}
+            placeholder="Search Tours..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} // Update searchQuery state
           />
           <button onClick={() => alert("search")}>Search</button>
         </div>
         <div className="tour-cards">
-          {bookings.map((booking) => (
-            <div key={booking.id} className="tour-card">
-              <img src={booking.location_img}></img>
-              <h3>{booking.location}</h3>
+          {filteredTours.map((tour) => (
+            <div key={tour._id} className="tour-card">
+              <img src={tour.location.image}></img>
+              <h3>{tour.location.name}</h3>
               <p>
-                <strong>Tour Begins</strong>: {booking.booking_date}
+                <strong>Tour Begins</strong>:{" "}
+                {new Date(tour.start_date).toDateString()}
               </p>
               <p>
-                <strong>Tour Guide</strong>:{booking.guide}
+                <strong>Tour Ends</strong>:{" "}
+                {new Date(tour.end_date).toDateString()}
               </p>
               <p>
-                <strong>Estimated Cost</strong>: {booking.price}
+                <strong>Tour Guide</strong>:
+                {tour.tour_guide.first_name + " " + tour.tour_guide.last_name}
+              </p>
+              <p>
+                <strong>Estimated Cost</strong>: ${tour.price}
               </p>
               <button className="view-location">
                 <NavLink
-                  to="/location/1"
+                  to={`/location/${tour.location._id}`}
                   style={{ textDecoration: "none", color: "white" }}
                 >
                   View Location
                 </NavLink>
               </button>
-              <button className="book-tour">Book Tour</button>
+              {user ? (
+                <button className="book-tour" onClick={() => bookTour(tour)}>
+                  Book Tour
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           ))}
         </div>

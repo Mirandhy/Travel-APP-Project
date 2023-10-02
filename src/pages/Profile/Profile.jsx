@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../../components/navbar/NavBar";
-import "./Profile.css"; // Import your CSS for styling
-import FeaturedBookings from "../../components/bookings/bookings";
+import "./Profile.css";
+import Bookings from "../../components/bookings/bookings";
+import { editUser } from "../../utilities/users-api";
 
-const Profile = ({ user }) => {
+const Profile = ({ user, setUser }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({ ...user });
+
+  useEffect(() => {
+    console.log("Loading Profile");
+  }, [setUser]);
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -19,14 +24,17 @@ const Profile = ({ user }) => {
     });
   };
 
-  const handleSaveChanges = () => {
-    // Implement your logic to save the edited user data here
-    // You can send an API request to update the user's profile
-    // Example: send a PATCH or PUT request to your API
-    console.log("Saving changes:", editedUser);
-
-    // After saving changes, exit edit mode
-    setIsEditing(false);
+  const handleSaveChanges = async () => {
+    try {
+      console.log("Saving changes:", editedUser);
+      await editUser(editedUser);
+      setUser({ ...editedUser });
+      // After saving changes, exit edit mode
+      setIsEditing(false);
+    } catch (error) {
+      alert("Error While Editing Profile");
+      console.log(error);
+    }
   };
 
   return (
@@ -131,7 +139,7 @@ const Profile = ({ user }) => {
           </div>
         )}
       </div>
-      <FeaturedBookings></FeaturedBookings>
+      <Bookings user={user}></Bookings>
     </div>
   );
 };

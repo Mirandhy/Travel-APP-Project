@@ -32,6 +32,11 @@ function App() {
           <Route path="/" element={<Home user={user} setUser={setUser} />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/tours" element={<Tours user={user} />} />
+          <Route
+            path="/location/:locationID"
+            user={user}
+            element={<Location user={user} />}
+          />
         </Routes>
       )}
     </main>
