@@ -5,6 +5,8 @@ import {
   cancelCustomerBooking,
 } from "../../utilities/bookings-api";
 
+//props user/logged in
+//usestate hook to manage bookings
 const Bookings = ({ user }) => {
   const [bookings, setBookings] = useState([]);
 
@@ -26,10 +28,11 @@ const Bookings = ({ user }) => {
     fetchBookingsFromAPI();
   }, []);
 
+//each booking is displayed as a card. Maps over booking array
   return (
     <div className="bookings">
       <h2>My Bookings</h2>
-      <div className="booking-cards">
+      <div className="booking-cards"> 
         {bookings.length > 0 ? (
           bookings.map((booking) => (
             <div key={booking._id} className="booking-card">

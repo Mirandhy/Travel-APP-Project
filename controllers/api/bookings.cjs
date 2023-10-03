@@ -2,6 +2,7 @@ const Booking = require("../../models/booking.cjs");
 const User = require("../../models/user.cjs");
 const Tour = require("../../models/tour.cjs");
 
+//models database schema for each entity
 module.exports = {
   create_booking,
   read_booking,
@@ -13,7 +14,7 @@ module.exports = {
 
 async function create_booking(req, res) {
   try {
-    // Add the booking to the database
+    // Add the booking to the database. first search for customer and tour booking to ensure they exist
     let searched_customer = await User.findById(req.body.customer._id);
     if (!searched_customer) {
       return res.status(404).json({ msg: "Customer Not Found!" });
@@ -91,6 +92,8 @@ async function update_booking(req, res) {
     res.status(400).json(err);
   }
 }
+
+// delete existing booking by ID
 async function delete_booking(req, res) {
   try {
     console.log(req.body);

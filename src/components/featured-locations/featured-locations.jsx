@@ -3,6 +3,9 @@ import "./featured-locations.css";
 import { NavLink } from "react-router-dom";
 import { getLocations } from "../../utilities/locations-api";
 
+//useState hook manages the locations state. An array of location data.
+//useEffect to fetch location.fetchLocationsFromAPI for data fetching 
+
 const FeaturedLocations = () => {
   const [locations, setLocations] = useState([]);
   useEffect(() => {

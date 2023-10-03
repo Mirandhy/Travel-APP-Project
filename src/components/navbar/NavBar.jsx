@@ -1,7 +1,7 @@
 import "./NavBar.css";
 import { Link } from "react-router-dom";
 
-const NavBar = ({ user }) => {
+const NavBar = ({ user }) => { // Define the NavBar functional component with a user prop
   const handleLogout = () => {
     //Clear LocalStorage and Return to home page by refreshing
     localStorage.clear();
@@ -9,6 +9,7 @@ const NavBar = ({ user }) => {
   };
   return (
     <nav className="nav-bar">
+       {/* Brand link to the home page */}
       <Link
         className="nav-bar-brand"
         to="/"
@@ -18,6 +19,7 @@ const NavBar = ({ user }) => {
       </Link>
 
       <div className="nav-bar-links">
+         {/* Navigation links */}
         <Link className="nav-link" to="/tours">
           Tours
         </Link>
@@ -28,7 +30,9 @@ const NavBar = ({ user }) => {
           About
         </Link>
         {user ? (
+          // Conditional rendering for authenticated user
           <>
+             {/* Sign out button */}
             <div
               className="nav-link"
               onClick={handleLogout}
@@ -36,6 +40,7 @@ const NavBar = ({ user }) => {
             >
               Sign Out
             </div>
+            {/* My Profile link */}
             <Link
               className="nav-link"
               to="/"
@@ -49,6 +54,7 @@ const NavBar = ({ user }) => {
             </Link>
           </>
         ) : (
+          // Conditional rendering for autohorized user
           <Link className="nav-link" to="/sign-up">
             Create an account
           </Link>
