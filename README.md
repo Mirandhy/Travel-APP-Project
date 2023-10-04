@@ -1,5 +1,5 @@
 Travel Booking App - A Mern Project
-Deployed on render: https://mern-travel-app-5a8r.onrender.com/
+Deployed on render: https://travel-booking-tz5d.onrender.com/
 
 https://app.diagrams.net/#G1P54ljU-0rcZgtlg1Mt1GjHAbnAfZjG3F
 
@@ -20,6 +20,7 @@ Technologies Used
 Frontend:
 
 React: React is used for building the frontend. It is a popular JavaScript library for building user interfaces.
+Vite: frontend tool for building web applications 
 React Router: React Router is used for client-side routing, enabling navigation between different pages of the app. React Router is a JavaScript framework that lets us handle client and server-side routing in React applications. It  allow navigating without refreshing the page.
 Weather API: https://open-meteo.com/
 
